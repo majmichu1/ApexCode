@@ -1,0 +1,57 @@
+{
+  "name": "apexcode-plugin",
+  "version": "1.0.0",
+  "description": "ApexCode plugin for OpenCode — MemPalace memory, Repomap, KAIROS analysis, LM Studio auto-discovery, and multi-agent swarms",
+  "type": "module",
+  "main": "./dist/server.js",
+  "exports": {
+    "./server": {
+      "import": "./dist/server.js",
+      "default": "./dist/server.js"
+    },
+    "./tui": {
+      "import": "./dist/tui.js",
+      "default": "./dist/tui.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "@opencode-ai/plugin": "*",
+    "@opentui/core": ">=0.1.97",
+    "@opentui/solid": ">=0.1.97"
+  },
+  "peerDependenciesMeta": {
+    "@opentui/core": {
+      "optional": true
+    },
+    "@opentui/solid": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "apexcode",
+    "repomap",
+    "memoray",
+    "kairos",
+    "lm-studio",
+    "swarm"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apexcode-ai/apexcode-plugin"
+  }
+}
