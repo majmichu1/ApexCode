@@ -2,7 +2,7 @@ import type { TuiPlugin, TuiPluginModule } from "@opencode-ai/plugin/tui"
 import { Text, Box } from "@opentui/core"
 import { createSignal, createEffect, For, Show, onCleanup } from "solid-js"
 import { isHealthy, getSuggestions } from "./go-backend"
-import { getIssues, formatIssues, type KairosIssue } from "./kairos"
+import { getIssues, formatIssues, type SentinelIssue } from "./sentinel"
 
 const PLUGIN_ID = "apexcode"
 
@@ -22,12 +22,12 @@ const tui: TuiPlugin = async (api) => {
     },
   })
 
-  // ---- Sidebar Content: KAIROS issues panel ----
+  // ---- Sidebar Content: Sentinel issues panel ----
   api.slots.register({
     order: 90,
     slots: {
       sidebar_content(ctx, props: { session_id: string }) {
-        return <KairosPanel api={api} sessionId={props.session_id} />
+        return <SentinelPanel api={api} sessionId={props.session_id} />
       },
     },
   })
@@ -48,14 +48,14 @@ const tui: TuiPlugin = async (api) => {
       },
     },
     {
-      title: "ApexCode: KAIROS Issues",
-      value: "apexcode.kairos",
+      title: "Sentinel: Code Issues",
+      value: "apexcode.sentinel",
       category: "ApexCode",
-      slash: { name: "kairos", aliases: ["suggest", "issues"] },
+      slash: { name: "sentinel", aliases: ["suggest", "issues"] },
       onSelect() {
         api.ui.toast({
           variant: "info",
-          title: "KAIROS",
+          title: "Sentinel",
           message: "Check the sidebar for proactive code analysis issues.",
         })
       },
@@ -110,9 +110,9 @@ function SidebarFooter(props: { api: Parameters<TuiPlugin>[0] }) {
   )
 }
 
-function KairosPanel(props: { api: Parameters<TuiPlugin>[0]; sessionId: string }) {
+function SentinelPanel(props: { api: Parameters<TuiPlugin>[0]; sessionId: string }) {
   const { api, sessionId } = props
-  const [issues, setIssues] = createSignal<KairosIssue[]>([])
+  const [issues, setIssues] = createSignal<SentinelIssue[]>([])
   const [loading, setLoading] = createSignal(false)
 
   async function fetchIssues() {

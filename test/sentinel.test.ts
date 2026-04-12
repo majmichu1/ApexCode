@@ -1,7 +1,7 @@
 import { describe, it, expect } from "bun:test"
-import { getIssues, formatIssue, formatIssues, type KairosIssue } from "../src/kairos"
+import { getIssues, formatIssue, formatIssues, type SentinelIssue } from "../src/sentinel"
 
-describe("kairos", () => {
+describe("sentinel", () => {
   describe("getIssues", () => {
     it("returns empty array when Go backend is not available", async () => {
       // Uses default URL which requires Go backend
@@ -12,7 +12,7 @@ describe("kairos", () => {
 
   describe("formatIssue", () => {
     it("formats a critical issue correctly", () => {
-      const issue: KairosIssue = {
+      const issue: SentinelIssue = {
         file: "src/auth.ts",
         line: 42,
         severity: "critical",
@@ -25,7 +25,7 @@ describe("kairos", () => {
     })
 
     it("formats a low severity issue correctly", () => {
-      const issue: KairosIssue = {
+      const issue: SentinelIssue = {
         file: "README.md",
         line: 1,
         severity: "low",
@@ -42,7 +42,7 @@ describe("kairos", () => {
     })
 
     it("groups issues by severity", () => {
-      const issues: KairosIssue[] = [
+      const issues: SentinelIssue[] = [
         { file: "a.ts", line: 1, severity: "high", message: "high issue" },
         { file: "b.ts", line: 2, severity: "critical", message: "critical issue" },
         { file: "c.ts", line: 3, severity: "high", message: "another high" },

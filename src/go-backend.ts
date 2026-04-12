@@ -80,7 +80,7 @@ export async function enhance(workDir: string, prompt: string, url = DEFAULT_URL
 }
 
 /**
- * Get proactive KAIROS analysis suggestions
+ * Get proactive Sentinel analysis suggestions
  */
 export async function getSuggestions(severity?: string, url = DEFAULT_URL): Promise<SuggestionsResponse | null> {
   try {

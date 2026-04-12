@@ -1,12 +1,12 @@
 # ApexCode Plugin for OpenCode
 
-**MemPalace memory · Repomap · KAIROS analysis · LM Studio auto-discovery · Multi-agent swarms**
+**MemPalace memory · Repomap · Sentinel analysis · LM Studio auto-discovery · Multi-agent swarms**
 
 ApexCode transforms OpenCode into the most capable AI coding agent by adding:
 
 - **MemPalace Memory** — Cross-session memory using the method of loci. The agent remembers your codebase patterns, past decisions, and preferences.
 - **Repomap + PageRank** — Repository mapping that identifies the most relevant files for any task using network analysis of code dependencies.
-- **KAIROS Proactive Analysis** — Continuous code scanning for TODOs, security issues, long functions, deep nesting, and hardcoded values.
+- **Sentinel Proactive Analysis** — Continuous code scanning for TODOs, security issues, long functions, deep nesting, and hardcoded values.
 - **LM Studio Auto-Discovery** — Automatically discovers ALL models from your local LM Studio instance. No manual configuration needed.
 - **Multi-Agent Swarms** — Spawn 6 specialized agents (Planner, Architect, Coder, Reviewer, Tester, Documenter) to collaborate on complex tasks.
 
@@ -67,7 +67,7 @@ Token savings from context injection: 60-80% vs full file contents
 
 Connect to LM Studio via `/connect` and all your local models appear automatically. No manual configuration. No stale cache files.
 
-### KAIROS Analysis
+### Sentinel Analysis
 
 View proactive code analysis results in the sidebar. The plugin scans for:
 - TODO/FIXME/HACK comments
@@ -112,7 +112,7 @@ The plugin registers these tools with OpenCode:
 
 | Command | Aliases | Description |
 |---------|---------|-------------|
-| `/kairos` | `/suggest`, `/issues` | View proactive analysis issues |
+| `/sentinel` | `/suggest`, `/issues` | View proactive analysis issues |
 | `/swarm` | `/agents` | Execute multi-agent swarm |
 | `/apex` | `/apexcode` | Health check for Go backend |
 
@@ -138,7 +138,7 @@ The plugin registers these tools with OpenCode:
                   │               │
                   │ MemPalace     │
                   │ Repomap       │
-                  │ KAIROS        │
+                  │ Sentinel        │
                   │ Swarms        │
                   └───────────────┘
 ```
