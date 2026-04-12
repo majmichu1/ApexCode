@@ -1,36 +1,13 @@
 import type { TuiPlugin, TuiPluginModule } from "@opencode-ai/plugin/tui"
-import { Text, Box } from "@opentui/core"
-import { createSignal, createEffect, For, Show, onCleanup } from "solid-js"
-import { isHealthy, getSuggestions } from "./go-backend"
-import { getIssues, formatIssues, type SentinelIssue } from "./sentinel"
+import { isHealthy } from "./go-backend"
 
 const PLUGIN_ID = "apexcode"
 
 // ---------------------------------------------------------------
-// TUI Plugin
+// TUI Plugin — registers slash commands
 // ---------------------------------------------------------------
 const tui: TuiPlugin = async (api) => {
   const GO_BACKEND_URL = "http://localhost:7777"
-
-  // ---- Sidebar Footer: ApexCode status ----
-  api.slots.register({
-    order: 100,
-    slots: {
-      sidebar_footer() {
-        return <SidebarFooter api={api} />
-      },
-    },
-  })
-
-  // ---- Sidebar Content: Sentinel issues panel ----
-  api.slots.register({
-    order: 90,
-    slots: {
-      sidebar_content(ctx, props: { session_id: string }) {
-        return <SentinelPanel api={api} sessionId={props.session_id} />
-      },
-    },
-  })
 
   // ---- Slash Commands ----
   api.command.register(() => [
@@ -75,92 +52,6 @@ const tui: TuiPlugin = async (api) => {
       },
     },
   ])
-}
-
-// ---------------------------------------------------------------
-// Components
-// ---------------------------------------------------------------
-
-function SidebarFooter(props: { api: Parameters<TuiPlugin>[0] }) {
-  const { api } = props
-  const [connected, setConnected] = createSignal(false)
-
-  // Poll health every 30s
-  let interval: ReturnType<typeof setInterval> | undefined
-
-  async function check() {
-    const ok = await isHealthy(GO_BACKEND_URL)
-    setConnected(ok)
-  }
-
-  void check()
-  interval = setInterval(check, 30000)
-
-  // Cleanup on unmount — we use a cleanup effect via onCleanup in the parent
-  // Since this is a slot component re-rendered by Solid, we handle it differently
-  return (
-    <Box flexDirection="row" gap={1} justifyContent="space-between">
-      <Text fg={api.theme.current.textMuted}>
-        <Text style={{ fg: api.theme.current.success }}>⚡</Text> ApexCode v1.0.0
-      </Text>
-      <Show when={connected()} fallback={<Text fg={api.theme.current.textMuted}>○</Text>}>
-        <Text fg={api.theme.current.success}>●</Text>
-      </Show>
-    </Box>
-  )
-}
-
-function SentinelPanel(props: { api: Parameters<TuiPlugin>[0]; sessionId: string }) {
-  const { api, sessionId } = props
-  const [issues, setIssues] = createSignal<SentinelIssue[]>([])
-  const [loading, setLoading] = createSignal(false)
-
-  async function fetchIssues() {
-    setLoading(true)
-    const result = await getIssues()
-    setIssues(result)
-    setLoading(false)
-  }
-
-  // Fetch on mount and periodically
-  void fetchIssues()
-
-  return (
-    <Box flexDirection="column" gap={1}>
-      <Box>
-        <Text bold fg={api.theme.current.text}>KAIROS Analysis</Text>
-      </Box>
-      <Show when={loading()}>
-        <Text fg={api.theme.current.textMuted}>Scanning...</Text>
-      </Show>
-      <Show when={!loading() && issues().length > 0}>
-        <Box flexDirection="column" gap={0}>
-          <For each={issues().slice(0, 10)}>
-            {(issue) => {
-              const color = {
-                critical: api.theme.current.error,
-                high: api.theme.current.warning,
-                medium: api.theme.current.info,
-                low: api.theme.current.textMuted,
-              }[issue.severity] ?? api.theme.current.textMuted
-
-              return (
-                <Text fg={color} wrap="truncate">
-                  {issue.file.split("/").pop()}:{issue.line} — {issue.message.slice(0, 60)}
-                </Text>
-              )
-            }}
-          </For>
-        </Box>
-      </Show>
-      <Show when={!loading() && issues().length === 0}>
-        <Text fg={api.theme.current.success}>✓ No issues found</Text>
-      </Show>
-      <Show when={issues().length > 10}>
-        <Text fg={api.theme.current.textMuted}>+{issues().length - 10} more</Text>
-      </Show>
-    </Box>
-  )
 }
 
 const plugin: TuiPluginModule = {

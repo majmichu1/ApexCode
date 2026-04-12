@@ -37,17 +37,6 @@ async function enhance(workDir, prompt, url = DEFAULT_URL) {
     return null;
   }
 }
-async function getSuggestions(severity, url = DEFAULT_URL) {
-  try {
-    const params = severity ? `?severity=${encodeURIComponent(severity)}` : "";
-    const resp = await fetch(`${url}/api/suggestions${params}`, { signal: AbortSignal.timeout(3000) });
-    if (!resp.ok)
-      return null;
-    return await resp.json();
-  } catch {
-    return null;
-  }
-}
 async function runSwarm(task, agents, mode, url = DEFAULT_URL) {
   try {
     const resp = await fetch(`${url}/api/swarm`, {
@@ -289,4 +278,4 @@ export {
   server_default as default
 };
 
-//# debugId=429E242DA59ADA3B64756E2164756E21
+//# debugId=1697F8668C18A0DD64756E2164756E21
