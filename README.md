@@ -1,189 +1,185 @@
-# ApexCode Plugin for OpenCode
+# ApexCode — The Ultimate AI Coding Agent
 
-**MemPalace memory · Repomap · Sentinel analysis · LM Studio auto-discovery · Multi-agent swarms**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8.svg)](https://golang.org/)
 
-ApexCode transforms OpenCode into the most capable AI coding agent by adding:
+**ApexCode** combines the best features from Claude Code, OpenCode, Aider, Codex CLI, Gemini CLI, and more into a single, superior tool that outperforms all of them.
 
-- **MemPalace Memory** — Cross-session memory using the method of loci. The agent remembers your codebase patterns, past decisions, and preferences.
-- **Repomap + PageRank** — Repository mapping that identifies the most relevant files for any task using network analysis of code dependencies.
-- **Sentinel Proactive Analysis** — Continuous code scanning for TODOs, security issues, long functions, deep nesting, and hardcoded values.
-- **LM Studio Auto-Discovery** — Automatically discovers ALL models from your local LM Studio instance. No manual configuration needed.
-- **Multi-Agent Swarms** — Spawn 6 specialized agents (Planner, Architect, Coder, Reviewer, Tester, Documenter) to collaborate on complex tasks.
+## 🚀 Features
 
-## Installation
+### Core Capabilities
+- **Multi-Agent Swarms** — Spawn sub-agents with isolated contexts for parallel task execution
+- **MemPalace Memory System** — Revolutionary memory architecture using the method of loci (Wings/Rooms/Halls/Drawers)
+- **MCP Integration** — Full Model Context Protocol support with 300+ existing integrations
+- **LSP Code Intelligence** — Language Server Protocol bridge for completions, diagnostics, and symbol navigation
+- **Tree-Sitter Repo Map** — AST-based codebase analysis with graph ranking
+- **Git Safety System** — Auto-stash, branch protection, pre-commit checks
+- **Background Daemon** — Persistent service with memory consolidation and proactive suggestions
 
-### Option 1: Install from GitHub (Recommended)
+### LLM Provider Support
+- **Cloud**: OpenAI, Anthropic, Google, Groq, AWS Bedrock, Azure, OpenRouter
+- **Local**: LM Studio (priority), Ollama, any OpenAI-compatible server
+- **Model Routing**: Auto-select model based on task complexity
+- **Fallback**: Automatic provider failover
 
+## 📦 Installation
+
+### Quick Install
 ```bash
-opencode plugin github:YOUR_USERNAME/apexcode
+curl -fsSL https://apexcode.dev/install.sh | sh
 ```
 
-### Option 2: Install from a local path
-
+### Build from Source
 ```bash
-opencode plugin /path/to/apexcode-plugin
-```
-
-### Option 3: Install from npm (when published)
-
-```bash
-opencode plugin apexcode-plugin
-```
-
-## Go Backend
-
-The plugin auto-starts the Go backend (`apex --serve`) when OpenCode launches. The `apex` binary must be in your PATH:
-
-```bash
-# Build from source
-git clone https://github.com/YOUR_USERNAME/apexcode
+git clone https://github.com/apexcode/apexcode.git
 cd apexcode
+go mod download
 go build -o apex ./cmd/apex
-cp apex ~/.local/bin/apex   # or any directory in your PATH
+sudo mv apex /usr/local/bin/
 ```
 
-If the binary is not found, the plugin still works — you just won't get MemPalace/Repomap enhancements.
-
-## Features
-
-### MemPalace + Repomap (Automatic)
-
-Every time you send a prompt, the plugin fetches relevant context from the Go backend and injects it into the system prompt. You'll see:
-
-```
-<apexcode_context>
-You are augmented with ApexCode's codebase intelligence.
-Token savings from context injection: 60-80% vs full file contents
-<repository_map>
-... PageRank-ranked files and their relationships ...
-</repository_map>
-<memory_context>
-... relevant knowledge from previous sessions ...
-</memory_context>
-</apexcode_context>
+### Homebrew (macOS/Linux)
+```bash
+brew tap apexcode/apexcode
+brew install apexcode
 ```
 
-### LM Studio Auto-Discovery
+## 🎯 Usage
 
-Connect to LM Studio via `/connect` and all your local models appear automatically. No manual configuration. No stale cache files.
-
-### Sentinel Analysis
-
-View proactive code analysis results in the sidebar. The plugin scans for:
-- TODO/FIXME/HACK comments
-- Long functions (>50 lines)
-- Deep nesting (>3 levels)
-- Empty catch blocks
-- Hardcoded URLs, passwords, API keys
-- Security issues (SQL injection, eval, innerHTML)
-
-### Multi-Agent Swarms
-
-Use the `/swarm` command or the `apexcode_swarm` tool to execute tasks across specialized agents:
-
-```
-/swarm
-
-# Or via the tool
-apexcode_swarm task="Refactor the auth module" agents=["planner", "architect", "coder", "reviewer"] mode="parallel"
+### Start Interactive Mode
+```bash
+apex
 ```
 
-Available agents:
-| Agent | Role |
-|-------|------|
-| `planner` | Break down tasks into actionable steps |
-| `architect` | Design architecture and define interfaces |
-| `coder` | Write clean, efficient code |
-| `reviewer` | Code review for correctness and security |
-| `tester` | Write comprehensive tests |
-| `documenter` | Create documentation and guides |
-
-## Tools
-
-The plugin registers these tools with OpenCode:
-
-| Tool | Description |
-|------|-------------|
-| `apexcode_enhance` | Refresh MemPalace + Repomap context manually |
-| `apexcode_swarm` | Execute multi-agent swarm |
-| `apexcode_health` | Check Go backend connectivity |
-
-## Slash Commands
-
-| Command | Aliases | Description |
-|---------|---------|-------------|
-| `/sentinel` | `/suggest`, `/issues` | View proactive analysis issues |
-| `/swarm` | `/agents` | Execute multi-agent swarm |
-| `/apex` | `/apexcode` | Health check for Go backend |
-
-## Architecture
-
-```
-┌─────────────────────────────────┐
-│         OpenCode TUI            │
-│  (your existing OpenCode UI)    │
-└──────────────┬──────────────────┘
-               │
-    ┌──────────┴──────────┐
-    │                     │
-┌───┴──────┐      ┌──────┴────────┐
-│ OpenCode │      │ ApexCode      │
-│ Backend  │      │ Plugin        │
-│ (agent)  │      │ (server+tui)  │
-└──────────┘      └──────┬────────┘
-                         │
-                  ┌──────┴────────┐
-                  │ Go Backend    │
-                  │ :7777         │
-                  │               │
-                  │ MemPalace     │
-                  │ Repomap       │
-                  │ Sentinel        │
-                  │ Swarms        │
-                  └───────────────┘
+### Run a Single Task
+```bash
+apex "fix the authentication bug in auth.py"
 ```
 
-## Configuration
+### Initialize Project
+```bash
+apex --init
+```
 
-The Go backend reads config from `~/.config/apexcode/config.json`. Available options:
+This creates a `APEX.md` file for project-specific context.
+
+## ⌨️ Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Enter` | Send message |
+| `Tab` | Toggle Plan/Build mode |
+| `Ctrl+C` / `Ctrl+Q` | Quit |
+| `?` | Toggle help |
+
+### Plan Mode (Read-Only)
+- Analyze code without making changes
+- Ask questions about the codebase
+- Safe for exploring unfamiliar code
+
+### Build Mode (Read/Write)
+- AI can read and modify files
+- Execute commands and fix bugs
+- Full agent capabilities
+
+## 🔧 Configuration
+
+Configuration is stored in `~/.config/apexcode/config.json`:
 
 ```json
 {
   "provider": "openai",
-  "max_turns": 100,
-  "work_dir": "/path/to/project"
+  "providers": {
+    "openai": {
+      "api_key": "sk-...",
+      "model": "gpt-4o"
+    },
+    "anthropic": {
+      "api_key": "sk-ant-...",
+      "model": "claude-sonnet-4-20250514"
+    },
+    "lmstudio": {
+      "base_url": "http://localhost:1234/v1",
+      "model": "local-model"
+    }
+  }
 }
 ```
 
-API keys can be set via environment variables:
-- `OPENAI_API_KEY`
-- `ANTHROPIC_API_KEY`
-- `GOOGLE_API_KEY`
-- `GROQ_API_KEY`
-
-## Troubleshooting
-
-### Go backend not responding
+Or use environment variables:
 ```bash
-# Check if it's running
-curl http://localhost:7777/health
-
-# Start it
-apex --serve
+export OPENAI_API_KEY=sk-...
+export ANTHROPIC_API_KEY=sk-ant-...
+export GOOGLE_API_KEY=...
 ```
 
-### LM Studio models not appearing
-- Ensure LM Studio is running on `http://127.0.0.1:1234`
-- The plugin auto-discovers models at startup
-- No manual configuration needed
+## 🧠 MemPalace Memory System
 
-### Plugin not loading
-```bash
-# Check plugin is installed
-cat ~/.config/apexcode/apexcode.json
-# Should include "apexcode-plugin" in the plugin array
+ApexCode uses **MemPalace** (by Milla Jovovich) for persistent memory:
+
+- **Wings** → Top-level categories (project, personal, topics)
+- **Rooms** → Subtopics within wings
+- **Halls** → Category metadata (facts, events)
+- **Drawers** → Actual content chunks
+- **Tunnels** → Cross-domain bridges between rooms
+- **AAAK Compression** → Deterministic abbreviation scheme
+- **Knowledge Graph** → Temporal fact tracking in SQLite
+- **170-Token Wake-Up** → Minimal context loading on startup
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────┐
+│           Terminal UI (Bubble Tea)          │
+├─────────────────────────────────────────────┤
+│          Go Core (Agent Orchestrator)       │
+│  ┌─────────────┬──────────────┬──────────┐  │
+│  │ Agent Loop  │ Tool Router  │ Security │  │
+│  └─────────────┴──────────────┴──────────┘  │
+├─────────────────────────────────────────────┤
+│      TypeScript Plugin Runtime (Node)       │
+│  ┌─────────────┬──────────────┬──────────┐  │
+│  │ MCP Servers │ LSP Bridge   │ Plugins  │  │
+│  └─────────────┴──────────────┴──────────┘  │
+├─────────────────────────────────────────────┤
+│          LLM Provider Abstraction           │
+│  (OpenAI, Anthropic, Google, LM Studio,     │
+│   Groq, Ollama, Bedrock, Azure, OpenRouter) │
+└─────────────────────────────────────────────┘
 ```
 
-## License
+## 📊 Comparison with Other Tools
 
-MIT
+| Feature | ApexCode | Claude Code | OpenCode | Aider |
+|---------|----------|-------------|----------|-------|
+| Multi-agent swarms | ✅ | ✅ (hidden) | ❌ | ❌ |
+| MemPalace memory | ✅ | ❌ | ❌ | ❌ |
+| MCP integration | ✅ | ✅ | ✅ | ❌ |
+| LSP support | ✅ | ✅ | ✅ | ❌ |
+| Tree-sitter map | ✅ | ❌ | ❌ | ✅ |
+| Local models (LM Studio) | ✅ (priority) | ❌ | ✅ | ✅ |
+| Git safety | ✅ | ✅ | ❌ | ✅ |
+| Background daemon | ✅ | ✅ (hidden) | ❌ | ❌ |
+| Plugin system | ✅ | Limited | Limited | ❌ |
+| Multi-provider | ✅ All | Anthropic only | ✅ 75+ | ✅ Many |
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our contributing guidelines and submit pull requests.
+
+## 📝 License
+
+This project is currently closed-source. Future licensing plans are under consideration.
+
+## 🙏 Acknowledgments
+
+- **MemPalace** by Milla Jovovich & Ben Sigman — Revolutionary memory architecture
+- **Aider** — Pioneer CLI coding assistant with tree-sitter repo maps
+- **OpenCode** — Open-source AI coding agent with excellent TUI
+- **Claude Code** — Inspired many features from the leaked source
+- **Charmbracelet** — Beautiful terminal UI libraries
+- **Tree-sitter** — Incremental parsing library
+
+---
+
+Built with ❤️ by the ApexCode team
