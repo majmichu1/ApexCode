@@ -147,8 +147,8 @@ const server: Plugin = async (input): Promise<Hooks> => {
       args: {},
       async execute() {
         const ctx = await injectContext(_workDir, "current context", _backendUrl)
-        if (!ctx) return { output: "ApexCode Go backend not available. Ensure it is running on port 7777." }
-        return { output: ctx }
+        if (!ctx) return "ApexCode Go backend not available. Ensure `apex --serve` is running."
+        return ctx
       },
     }),
 
@@ -172,9 +172,9 @@ const server: Plugin = async (input): Promise<Hooks> => {
         const mode = (args.mode as "parallel" | "sequential") ?? "parallel"
         const result = await executeSwarm(args.task, agents, mode)
         if (!result) {
-          return { output: "Swarm execution failed. Ensure the ApexCode Go backend is running on port 7777." }
+          return "Swarm execution failed. Ensure the ApexCode Go backend is running on port 7777."
         }
-        return { output: formatSwarmResult(result) }
+        return formatSwarmResult(result)
       },
     }),
 
@@ -183,7 +183,9 @@ const server: Plugin = async (input): Promise<Hooks> => {
       args: {},
       async execute() {
         const ok = await isHealthy(_backendUrl)
-        return { output: ok ? "ApexCode Go backend is healthy and connected." : "ApexCode Go backend is not responding." }
+        return ok
+          ? "ApexCode Go backend is healthy and connected on port 7777."
+          : "ApexCode Go backend is not responding. Run `apex --serve` to start it."
       },
     }),
   }

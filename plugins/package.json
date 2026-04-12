@@ -1,0 +1,12 @@
+{
+  "name": "@apexcode/plugins",
+  "version": "0.1.0",
+  "description": "ApexCode TypeScript Plugin Runtime",
+  "main": "runtime.js",
+  "scripts": {
+    "start": "node runtime.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

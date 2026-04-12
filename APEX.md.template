@@ -1,0 +1,23 @@
+# APEX.md - Project Context
+
+## Project Overview
+<!-- Describe your project here -->
+<!-- This file is automatically loaded by ApexCode at session start -->
+
+## Architecture
+<!-- Key architectural decisions -->
+<!-- Directory structure and important components -->
+
+## Coding Standards
+<!-- Language-specific conventions and style guides -->
+<!-- Naming conventions, formatting rules -->
+
+## Important Notes
+<!-- Anything the AI should know -->
+<!-- Third-party integrations, API keys locations, etc. -->
+
+## Tech Stack
+<!-- Languages, frameworks, and libraries used -->
+
+## Key Files
+<!-- List important files and their purposes -->
