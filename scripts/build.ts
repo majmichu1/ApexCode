@@ -13,7 +13,6 @@ await $`mkdir -p ${dist}`
 await Bun.build({
   entrypoints: [
     path.join(src, "server.ts"),
-    path.join(src, "tui.tsx"),
   ],
   outdir: dist,
   target: "node",
