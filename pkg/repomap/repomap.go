@@ -2,7 +2,7 @@ package repomap
 
 import (
 	"fmt"
-	"math"
+	
 	"os"
 	"path/filepath"
 	"sort"
